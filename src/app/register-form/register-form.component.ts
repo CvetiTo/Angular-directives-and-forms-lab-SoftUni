@@ -10,6 +10,7 @@ export class RegisterFormComponent implements OnInit, AfterViewInit {
 
   @ViewChild('registrationForm') registrationForm: NgForm;
   @ViewChild('username') username: NgModel;
+  @ViewChild('email') email: NgModel;
 
   buildingSistems: string[] = [
     'Designer',
@@ -30,6 +31,7 @@ export class RegisterFormComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     console.log(this.username);
+    console.log(this.email)
   }
 
   onSubmit(): void {

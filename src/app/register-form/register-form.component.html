@@ -6,34 +6,49 @@
 
       <p class="field field-icon">
         <label for="username"><span><i class="fas fa-user"></i></span></label>
-        <input #username="ngModel" type="text" name="username" ngModel id="username" required minlength="5" class="error" placeholder="Mark Ulrich"> 
+        <input #username="ngModel" type="text" name="username" ngModel id="username" required pattern="^[A-Z][a-z]+\s[A-Z][a-z]+$" class="error" placeholder="Mark Ulrich"> 
       </p>
 
       <!-- if error -->
       <ng-container *ngIf="username.touched && username.invalid">
         <!--{{username.errors | json}}-->
-        <p *ngIf="username.errors?.['required']" class="error" >
+        <div *ngIf="username.errors?.['required']" class="alert alert-danger">
           Username is required!  
-        </p>
-        <p *ngIf="username.errors?.['minlength']" class="error" >
-          Username must be more than characters long!  
-        </p>
+        </div>
+        <div *ngIf="username.errors?.['pattern']" class="alert alert-danger" >
+          Fullname must contain 2 names, start with capital letters, separated by space!  
+        </div>
       </ng-container>
       
       <!-- end if error -->
       
       <p class="field field-icon">
         <label for="email"><span><i class="fas fa-envelope"></i></span></label>
-        <input type="text" name="email" ngModel id="email" required placeholder="marк@gmial.com">
+        <input #email="ngModel" type="text" name="email" ngModel email="true" id="email" required class="error" placeholder="marк@gmial.com">
       </p>
+
+      <ng-container *ngIf="email.touched && email.invalid">
+        <div *ngIf="email.errors?.['email']" class="alert alert-danger">
+          Please enter a valid email!  
+        </div>
+      </ng-container>
 
       <p class="field field-icon">
         <label for="tel"><span><i class="fas fa-phone"></i></span></label>
         <select name="tel" id="tel" class="tel">
           <option *ngFor="let tel of telSistems" [value]="tel">{{tel}}</option>
         </select>
-        <input type="number" name="tel" ngModel id="tel" required minlength="9" placeholder="888 888">
+        <input #tel="ngModel" type="number" name="tel" ngModel id="tel" required pattern="^\d{9}$" placeholder="888 888">
       </p>
+      <ng-container *ngIf="tel.touched && tel.invalid">
+        <!--{{username.errors | json}}-->
+        <div *ngIf="tel.errors?.['required']" class="alert alert-danger">
+          Phone is required!  
+        </div>
+        <div *ngIf="tel.errors?.['pattern']" class="alert alert-danger">
+          The phone number must be a 9 digit number!  
+        </div>
+      </ng-container>
 
       <p class="field field-icon">
         <label for="building"><span><i class="fas fa-building"></i></span></label>
@@ -46,19 +61,24 @@
         {{passwordsGroup.valid}}
         <p class="field field-icon">
           <label for="password"><span><i class="fas fa-lock"></i></span></label>
-          <input type="password" name="password" ngModel id="password" required minlength="3" maxlength="16" placeholder="******">
-        </p>
-
-        <p class="field field-icon">
-          <label for="re-password"><span><i class="fas fa-lock"></i></span></label>
-          <input type="re-password" name="re-password" ngModel id="re-password" required  placeholder="******">
-        </p>
-          
-        <p *ngIf="passwordsGroup.touched && passwordsGroup.invalid">
-          {{passwordsGroup.errors | json}}
-          Both password must be valid!  
+          <input #password="ngModel" type="password" name="password" ngModel id="password" required pattern="^\w{3,16}$" placeholder="******">
         </p>
         
+        <p class="field field-icon">
+          <label for="re-password"><span><i class="fas fa-lock"></i></span></label>
+          <input #repass="ngModel" type="re-password" name="re-password" ngModel id="re-password" required  placeholder="******">
+        </p>
+
+        <ng-container *ngIf="passwordsGroup.touched && passwordsGroup.invalid || password.value !== repass.value">
+          <div *ngIf="password.errors?.['pattern']" class="alert alert-danger">
+            The password must be between 3 and 16 symbols-only letters and digits!  
+          </div>
+          <div *ngIf="password.value !== repass.value" class="alert alert-danger">
+            Passwords don't match!
+          </div>
+          {{passwordsGroup.errors | json}}
+        </ng-container>
+
       </div>
 
       <p>

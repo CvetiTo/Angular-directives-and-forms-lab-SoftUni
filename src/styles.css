@@ -30,7 +30,9 @@ button {
     padding: 0.8em 1.2em;
     width: 100%;
 }
-
+button[disabled] {
+     background-color: #db86b2
+}
 i {
     border: 1px solid;
     border-right: none;
